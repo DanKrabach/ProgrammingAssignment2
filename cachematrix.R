@@ -1,16 +1,39 @@
-## Just a test 
-## Put comments here that give an overall description of what your
-## functions do
+## This contains two functions, one that save as computation of a matrix inverse
+## in a special list, and a function that computes the mean and saves the result
+## inside the list,
 
-## Write a short comment describing this function
+## This is the constructor function that creates and manages a saved matrix to
+## avoid represted computation.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  m <- NULL
+  set <- function(y) {
+    x <<- x
+    m <<- NULL
+  }
+  get <- function() x
+  setsolve <- function(solve) m <<- solve
+  getsolve <- function() m
+  list(set = set, get = get,
+       setsolve = setsolve,
+       getsolve = getsolve)
 }
 
 
-## Write a short comment describing this function
+## Solve (invert) the supplied matrix and place back into the 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+    m <- x$getsolve()
+    if(!is.null(m)) {
+      message("getting cached data")
+      return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setsolve(m)
+    m
+  }
+
+
+
+
